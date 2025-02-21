@@ -118,9 +118,9 @@
           citizenTableBody.innerHTML = "";
           data.forEach((citizen) => {
             const row = document.createElement("tr");
-            row.className = "hover:bg-gray-50 transition-colors duration-200";
+            row.className = "transition-colors duration-200";
             row.innerHTML = `
-              <td class="p-3 text-gray-900 font-medium">${citizen.secretaria}</td>
+              <td class="p-3 text-white font-medium">${citizen.secretaria}</td>
               <td class="p-3">
                 <span class="status-badge px-3 py-1 rounded-full text-sm font-semibold tracking-wide 
                   ${citizen.status === 'Em Andamento' ? 'bg-yellow-100 text-yellow-700 border border-yellow-300' : 
@@ -129,8 +129,8 @@
                   ${citizen.status}
                 </span>
               </td>
-              <td class="p-3 text-gray-700">${citizen.dataAbertura}</td>
-              <td class="p-3 text-gray-700">${citizen.prazoRestante}</td>
+              <td class="p-3 text-white">${citizen.dataAbertura}</td>
+              <td class="p-3 text-white">${citizen.prazoRestante}</td>
               <td class="p-3">
                 <span class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-blue-200 bg-blue-900/80 border border-blue-700 rounded-full shadow-md shadow-blue-500/20 tracking-wide uppercase">
                   ${citizen.protocolo}
