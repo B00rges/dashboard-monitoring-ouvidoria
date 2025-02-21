@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard com Gráficos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Estilo para o botão */
+        .btn {
+            display: flex;
+            align-items: center;
+            background-color: #4F46E5;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .btn svg {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard de Gráficos</h1>
+        <div>
+            <canvas id="atendimentosChart"></canvas>
+        </div>
+        <div>
+            <canvas id="statusChart"></canvas>
+        </div>
+        <a href="#" id="downloadBtn" class="btn">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v8.585l3.707-3.708a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 12.585V4a1 1 0 011-1z" clip-rule="evenodd"/>
+            </svg>
+            Baixar Gráficos como SVG
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Gráfico de Reclamações por Departamento
+            function renderDepartmentChart() {
+                const atendimentosCtx = document.getElementById('atendimentosChart').getContext('2d');
+                new Chart(atendimentosCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                        datasets: [{
+                            label: '',
+                            data: [50, 75], // Dados de exemplo para o gráfico
+                            backgroundColor: '#4F46E5', // Cor do gráfico
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Evolução de Atendimentos por Mês'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Gráfico de Status das Reclamações
+            function renderStatusChart() {
+                const statusCtx = document.getElementById('statusChart').getContext('2d');
+                new Chart(statusCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Em Andamento', 'Não Respondida', 'Concluída'],
+                        datasets: [{
+                            label: 'Quantidade',
+                            data: [1, 4, 3],
+                            backgroundColor: ['#F59E0B', '#EF4444', '#10B981'],
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Atendimentos em Progresso'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Quantidade'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Função para baixar os gráficos como SVG
+            document.getElementById('downloadBtn').addEventListener('click', (e) => {
+                e.preventDefault();  // Impede o link de navegar
+
+                const atendimentosChart = document.getElementById('atendimentosChart');
+                const statusChart = document.getElementById('statusChart');
+
+                // Exporta o gráfico de atendimentos
+                const atendimentosSvg = atendimentosChart.toDataURL('image/svg+xml');
+                const statusSvg = statusChart.toDataURL('image/svg+xml');
+
+                // Cria links para download
+                const linkAtendimentos = document.createElement('a');
+                linkAtendimentos.href = atendimentosSvg;
+                linkAtendimentos.download = 'grafico_atendimentos.svg';
+                linkAtendimentos.click();
+
+                const linkStatus = document.createElement('a');
+                linkStatus.href = statusSvg;
+                linkStatus.download = 'grafico_status.svg';
+                linkStatus.click();
+            });
+
+            renderDepartmentChart();
+            renderStatusChart();
+        });
+    </script>
+</body>
+</html>
